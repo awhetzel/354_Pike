@@ -1,11 +1,14 @@
 int main() 
 {
-	write("Mancala The Video Game\n");						//print statement in pike
+	write("Mancala The Video Game\n");						
 	write("*Made in Pike*\n");
 	write("Would you like to play 1 or 2 player? (Enter 1 or 2)\n");
-	string players = Stdio.stdin->gets();
-	int numPlayers = (int) players;
-	while(numPlayers <= 1 || numPlayers >= 2){
+	string players;
+	int numPlayers;
+
+    players = Stdio.stdin->gets();
+	numPlayers = (int) players;
+	while(numPlayers < 1 || numPlayers > 2){
 		write("Incorrect Entry, Please enter 1 for 1 player or 2 for 2 players\n");
 		players = Stdio.stdin->gets();
 		numPlayers = (int) players;
@@ -27,52 +30,152 @@ int main()
 	//	else if(CPUlevel == 3)
 	//		write("Hard\n");
 	//}
-	
 	array user1 = ({1, 2, 3, 4, 5, 6});
 	array user2 = ({8, 9, 10, 11, 12, 13});
 	array boardIndex = ({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
 	//toString(boardIndex);
-	array board = ({4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0});		//array creation
-	string s = toString(board);						//array to string to put into mancala board format
+	array board = ({4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0});
+	//array to string to put into mancala board format
+	string s = toString(board);						
 	write(s);
 	string indexstr;
+	int end= 0;
 	while(1 != 0){
 		write("\nUser Input: " + indexstr + "\nEnter an index: ");		
-		indexstr = Stdio.stdin->gets();					//get input from user
-		int index = (int) indexstr;					//convert user string input to int
+		indexstr = Stdio.stdin->gets();					
+		int index = (int) indexstr;	
 		if(index >= 1 && index <=14 && index != 7 && index != 14){
-			//board[index-1] = board[index] - 1;				//decrement that position on board
-			int marbleCount = board[index-1];
-			board[index-1] = 0;
-			int nextMove = index-2;
-			while(marbleCount != 0){
-				if(index == 14)
-					index = 0;
-				board[index] = board[index] + 1;
-				index++;
-				marbleCount--;
-			}
-			toString(board);
-			write(s);
-		} else {
+			//Player 1 turn
+			playerOneTurn(board,index);
+			write(s+"\n");
+			//Computer's turn
+			compTurn(board);
+			write(s+"\n");
+		} 
+		else{
 			write("\nIndex given is not in range");
+		}
+		end = endCheck(board);
+		if(end >0){
+			finishUp(board);
 		}
 	}
 	return 0;
 }
-
+/*
+* Format board
+*/ 
 string toString(array items){
 	string s = "done";
-	for(int i = 5; i >= 0; i--)						//loop to print top 6 positions of the board
+	//loop to print top 6 positions of the board
+	for(int i = 5; i >= 0; i--)						
 	{
 		write(" |" + items[i]);
 	}
 	write(" | \n");
-	write("" + items[6] + "|--|--|--|--|--|--|" + items[13] + "\n");	//prints middle seperator and end parts of the board
-	for(int i = 7; i < 13; i++)						//loop to print bottom 6 positions of the board
+	//prints middle seperator and end parts of the board
+	write("" + items[6] + "|--|--|--|--|--|--|" + items[13] + "\n");	
+	//loop to print bottom 6 positions of the board
+	for(int i = 7; i < 13; i++)	
 	{
 		write(" |" + items[i]);
 	}
 	write(" | \n");
-	return s;								//return string s which is "done" currently the toString doesnt create a string but just prints the format within the method
+	/*return string s which is "done" 
+	* currently the toString doesnt 
+	* create a string but just prints 
+	* the format within the method*/
+	return s;					
 }
+/*
+* Check if game is over
+*/
+int endCheck(array board){
+	int isFinished =0;
+	int foundP1 = 0;
+	int foundP2 = 0;
+	//check if 0-5 is all zeroes
+	for(int i =0; i<6; i++){
+		if(board[i] >0){
+			foundP1 = 1;
+			break;
+		}
+	}
+	//check if 7-12 is all zeroes
+	for(int i=7; i<13; i++){
+		if(board[i] >0){
+			foundP2 =1;
+			break;
+		}
+	}
+	if(foundP1 == 0 || foundP2 == 0){
+		isFinished =1;
+	}
+	return isFinished;
+}
+/*
+* Find out who won and print
+* results
+*/
+void finishUp(array board){
+	int player1Score = board[6];
+	int player2Score = board[13];
+	if(player1Score > player2Score){
+		write("Player 1 wins!");
+	}
+	else if(player1Score < player2Score){
+		write("Player 2 wins!");
+	}
+	else{
+		write("TIE!");
+	}
+	//delay for 5 seconds to display results
+	delay(5);
+	exit(0);
+}
+/*
+* Player one's turn
+*/
+void playerOneTurn(array board, int index){
+	int marbleCount = board[index-1];
+	board[index-1] = 0;
+			
+	while(marbleCount != 0){
+		if(index == 14){
+			index = 0;
+		}
+		if(index != 13){
+			board[index] = board[index] + 1;
+			marbleCount--;
+		}
+		index++;
+		//TODO if we hit zero marbles, and we land in our mancala, we get another turn
+	}
+	toString(board);
+}
+/*
+* computer's turn
+*/
+void compTurn(array board){
+	//Computer selects a number on the bottom side of the board
+	int computerIndex = random((12 - 7) + 1) + 7;
+	write("computer selects pit #: "+(computerIndex+1)+"\n");
+	//Computer grabs some marbles from the selected index
+	int compMarbles = board[computerIndex];
+	board[computerIndex] =0;
+	//Start adding marbles to selected index+1
+	computerIndex++;
+	while(compMarbles > 0){
+		if(computerIndex == 14){
+			computerIndex =0;
+		}
+		//Add a marble to the pit	
+		if(computerIndex != 6){
+			board[computerIndex] = board[computerIndex]+1;
+			compMarbles --;
+		}
+		computerIndex ++;
+	}
+	toString(board);
+}
+
