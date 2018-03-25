@@ -40,15 +40,18 @@ int main()
 	write(s);
 	string indexstr;
 	int end= 0;
+	int pNum = 1;
+	int pOneTurn = 0;
+	int pTwoTurn =0;
+	int index =0;
 	while(1 != 0){
-		
-		//if(numPlayers ==1){ TODO for multimplayer mode
+		//Single player
+		if(numPlayers ==1){ 
 			int compsTurn = 0;
-			int pOneTurn = 0;
 			write("\nEnter an index: ");		
 			indexstr = Stdio.stdin->gets();					
-			int index = (int) indexstr;	
-			if(index >= 1 && index <=14 && index != 7 && index != 14){
+			index = (int) indexstr;	
+			if(index >= 1 && index <=6 && index != 7 && index != 14){
 				if(compsTurn ==0){
 					//Player 1 turn
 					pOneTurn = playerOneTurn(board,index);
@@ -63,7 +66,36 @@ int main()
 			else{
 				write("\nIndex given is not in range");
 			}
-		//}
+		}
+		//MultiPlayer
+		else if(numPlayers ==2){
+			write("\n Player "+pNum +" enter an index: ");
+			indexstr = Stdio.stdin->gets();					
+			index = (int) indexstr;	
+			//Player one
+			if(pNum ==1){
+				if(index >= 1 && index <=6 && index != 7 && index != 14){
+					pOneTurn = playerOneTurn(board,index);
+					write(s+"\n");
+				}
+				if(pOneTurn == 0){
+					pNum =2;
+				}
+			}
+			//Player two
+			else if(pNum == 2){
+				if(index >= 7 && index <=14 && index != 7 && index != 14){
+					pTwoTurn = playerTwoTurn(board, index);
+					write(s+"\n");
+				}
+				if(pTwoTurn == 0){
+					pNum =1;
+				}
+			}
+			else{
+				write("\nIndex given is not in range");
+			}
+		}
 		end = endCheck(board);
 		if(end >0){
 			finishUp(board);
@@ -75,7 +107,7 @@ int main()
 * Format board
 */ 
 string toString(array items){
-	string s = "done";
+	string s = "";
 	//loop to print top 6 positions of the board
 	for(int i = 5; i >= 0; i--)						
 	{
@@ -127,6 +159,7 @@ int endCheck(array board){
 * results
 */
 void finishUp(array board){
+	//TODO can add final rule 
 	int player1Score = board[6];
 	int player2Score = board[13];
 	if(player1Score > player2Score){
@@ -172,6 +205,35 @@ int playerOneTurn(array board, int index){
 	return extraTurn;
 }
 /*
+* Player two's turn
+*/
+int playerTwoTurn(array board, int index){
+	int marbleCount = board[index-1];
+	board[index-1] = 0;
+	int extraTurn =0;
+			
+	while(marbleCount != 0){
+		if(index == 14){
+			index = 0;
+		}
+		if(index != 6){
+			board[index] = board[index] + 1;
+			marbleCount--;
+		}
+		index++;
+		//Rule 7
+		if(marbleCount == 0 && index ==14){
+			extraTurn =1;
+		}
+		//Rule 8
+		else if(marbleCount ==0 && board[index-1] ==1){
+			capture(board, index, 13);
+		}
+	}
+	toString(board);
+	return extraTurn;
+}
+/*
 * computer's turn
 */
 int compTurn(array board){
@@ -204,13 +266,10 @@ int compTurn(array board){
 	toString(board);
 	return extraCompTurn;
 }
-
+/*
+* Handles rule 8
+*/
 void capture(array board, int index, int mancalaNum){
 	write("Player with mancala: "+(mancalaNum+1)+" captured pit: "+ (12-(index-1)+1)+"\n");
 	board[mancalaNum] += 12-(index-1)+board[index-1];
 }
-
-
-
-
-
