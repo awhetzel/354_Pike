@@ -22,7 +22,7 @@ add multiplayer and GUI features.
     
 * If the last piece you drop is in your own store, you get a free turn.
 
-* If the last piece you drop is in an empty hole on your side, you capture that piece and any pieces in the hole directly opposite.
+* If the last piece you drop is in an empty hole on your side, you capture that piece and any pieces in the hole directly opposite. (not implemented yet)
    
 * Always place all captured pieces in your store.
     
