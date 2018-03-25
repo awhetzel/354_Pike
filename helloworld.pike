@@ -41,16 +41,26 @@ int main()
 	string indexstr;
 	int end= 0;
 	while(1 != 0){
+		
+		int compsTurn = 0;
+		int pOneTurn = 0;
 		write("\nUser Input: " + indexstr + "\nEnter an index: ");		
 		indexstr = Stdio.stdin->gets();					
 		int index = (int) indexstr;	
+		
+		
 		if(index >= 1 && index <=14 && index != 7 && index != 14){
-			//Player 1 turn
-			playerOneTurn(board,index);
-			write(s+"\n");
-			//Computer's turn
-			compTurn(board);
-			write(s+"\n");
+			
+			if(compsTurn ==0){
+				//Player 1 turn
+				pOneTurn = playerOneTurn(board,index);
+				write(s+"\n");
+			}
+			if( pOneTurn ==0){
+				//Computer's turn
+				compsTurn = compTurn(board);
+				write(s+"\n");
+			}
 		} 
 		else{
 			write("\nIndex given is not in range");
@@ -136,9 +146,10 @@ void finishUp(array board){
 /*
 * Player one's turn
 */
-void playerOneTurn(array board, int index){
+int playerOneTurn(array board, int index){
 	int marbleCount = board[index-1];
 	board[index-1] = 0;
+	int extraTurn =0;
 			
 	while(marbleCount != 0){
 		if(index == 14){
@@ -149,14 +160,19 @@ void playerOneTurn(array board, int index){
 			marbleCount--;
 		}
 		index++;
-		//TODO if we hit zero marbles, and we land in our mancala, we get another turn
+		//If player lands in mancala ,they get and extra turn
+		if(marbleCount == 0 && index ==7){
+			extraTurn =1;
+		}
 	}
 	toString(board);
+	return extraTurn;
 }
 /*
 * computer's turn
 */
-void compTurn(array board){
+int compTurn(array board){
+	int extraCompTurn =0;
 	//Computer selects a number on the bottom side of the board
 	int computerIndex = random((12 - 7) + 1) + 7;
 	write("computer selects pit #: "+(computerIndex+1)+"\n");
@@ -175,7 +191,11 @@ void compTurn(array board){
 			compMarbles --;
 		}
 		computerIndex ++;
+		if(compMarbles == 0 && computerIndex == 14){
+			extraCompTurn =1;
+		}
 	}
 	toString(board);
+	return extraCompTurn;
 }
 
