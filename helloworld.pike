@@ -42,29 +42,28 @@ int main()
 	int end= 0;
 	while(1 != 0){
 		
-		int compsTurn = 0;
-		int pOneTurn = 0;
-		write("\nUser Input: " + indexstr + "\nEnter an index: ");		
-		indexstr = Stdio.stdin->gets();					
-		int index = (int) indexstr;	
-		
-		
-		if(index >= 1 && index <=14 && index != 7 && index != 14){
-			
-			if(compsTurn ==0){
-				//Player 1 turn
-				pOneTurn = playerOneTurn(board,index);
-				write(s+"\n");
+		//if(numPlayers ==1){ TODO for multimplayer mode
+			int compsTurn = 0;
+			int pOneTurn = 0;
+			write("\nEnter an index: ");		
+			indexstr = Stdio.stdin->gets();					
+			int index = (int) indexstr;	
+			if(index >= 1 && index <=14 && index != 7 && index != 14){
+				if(compsTurn ==0){
+					//Player 1 turn
+					pOneTurn = playerOneTurn(board,index);
+					write(s+"\n");
+				}
+				if( pOneTurn ==0){
+					//Computer's turn
+					compsTurn = compTurn(board);
+					write(s+"\n");
+				}
+			} 
+			else{
+				write("\nIndex given is not in range");
 			}
-			if( pOneTurn ==0){
-				//Computer's turn
-				compsTurn = compTurn(board);
-				write(s+"\n");
-			}
-		} 
-		else{
-			write("\nIndex given is not in range");
-		}
+		//}
 		end = endCheck(board);
 		if(end >0){
 			finishUp(board);
@@ -160,9 +159,13 @@ int playerOneTurn(array board, int index){
 			marbleCount--;
 		}
 		index++;
-		//If player lands in mancala ,they get and extra turn
+		//Rule 7
 		if(marbleCount == 0 && index ==7){
 			extraTurn =1;
+		}
+		//Rule 8
+		else if(marbleCount ==0 && board[index-1] ==1){
+			capture(board, index, 6);
 		}
 	}
 	toString(board);
@@ -194,8 +197,20 @@ int compTurn(array board){
 		if(compMarbles == 0 && computerIndex == 14){
 			extraCompTurn =1;
 		}
+		else if(compMarbles ==0 && board[computerIndex-1] ==0){
+			capture(board, computerIndex, 13);
+		}
 	}
 	toString(board);
 	return extraCompTurn;
 }
+
+void capture(array board, int index, int mancalaNum){
+	write("Player with mancala: "+(mancalaNum+1)+" captured pit: "+ (12-(index-1)+1)+"\n");
+	board[mancalaNum] += 12-(index-1)+board[index-1];
+}
+
+
+
+
 
