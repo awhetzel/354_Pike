@@ -40,3 +40,4 @@ add multiplayer and GUI features.
 ## Testing
 
 ## Known Bugs
+* See issue #1
