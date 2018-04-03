@@ -271,5 +271,7 @@ int compTurn(array board){
 */
 void capture(array board, int index, int mancalaNum){
 	write("Player with mancala: "+(mancalaNum+1)+" captured pit: "+ (12-(index-1)+1)+"\n");
-	board[mancalaNum] += 12-(index-1)+board[index-1];
+	//capture pieces on opposite side 
+	board[mancalaNum] += board[12-(index-1)]+board[index-1];
+	board[12-(index-1)] =0;
 }
