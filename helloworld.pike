@@ -111,17 +111,28 @@ string toString(array items){
 	//loop to print top 6 positions of the board
 	for(int i = 5; i >= 0; i--)						
 	{
-		write(" |" + items[i]);
+		if(i ==5){
+			write(" ");
+		}
+		
+		
+		write("  |" + items[i]);
 	}
-	write(" | \n");
+	write("  | \n");
 	//prints middle seperator and end parts of the board
-	write("" + items[6] + "|--|--|--|--|--|--|" + items[13] + "\n");	
+	if(items[6] <10){
+		write(" ");
+	}
+	write("" + items[6] + " |---|---|---|---|---|---| " + items[13] + "\n");	
 	//loop to print bottom 6 positions of the board
 	for(int i = 7; i < 13; i++)	
 	{
-		write(" |" + items[i]);
+		if(i==7){
+			write(" ");
+		}
+		write("  |" + items[i]);
 	}
-	write(" | \n");
+	write("  | \n");
 	/*return string s which is "done" 
 	* currently the toString doesnt 
 	* create a string but just prints 
@@ -273,5 +284,6 @@ void capture(array board, int index, int mancalaNum){
 	write("Player with mancala: "+(mancalaNum+1)+" captured pit: "+ (12-(index-1)+1)+"\n");
 	//capture pieces on opposite side 
 	board[mancalaNum] += board[12-(index-1)]+board[index-1];
+	board[index-1] =0;
 	board[12-(index-1)] =0;
 }
