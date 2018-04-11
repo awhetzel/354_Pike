@@ -1,0 +1,38 @@
+# 354_Pike
+* Authors: Aaron Whetzel, Jacob Doerr
+
+## Description
+This is a simple implementation of Mancala in Pike. It is a simple
+console game with single and two player options. See the included 
+pdf for gameplay rules.  
+
+## Pike setup (Windows machine) 
+
+* Download and install Pike from the official website: 
+	
+	* Copy and paste the following URL into a browser
+		
+		https://pike.lysator.liu.se/download/pub/pike/latest-stable/
+		
+* Run the executable Pike file:
+
+	* Locate the Pike executable in the source directory using Windows
+	  File Explorer
+	  
+	* Double click the .exe file to run the program
+		
+## Manifest
+
+* README.md - This file
+
+* mancala.pike - Source/executable file
+
+
+## Testing
+
+* This project was tested with a very limited beta testing approach.
+  Basically we had friends and family play the game after learning the
+  rules to test the project. We also played it a lot ourselves to test.
+
+## Known Bugs
+* Currently no known bugs
