@@ -19,11 +19,13 @@ pdf for gameplay rules.
 	* Locate the Pike executable in the source directory using Windows
 	  File Explorer
 	  
-	* Double click the .exe file to run the program
+	* Double click the .pike file to run the program
 		
 ## Manifest
 
 * README.md - This file
+
+* mancalaproject.pdf - Project and game overview file
 
 * mancala.pike - Source/executable file
 
@@ -33,6 +35,11 @@ pdf for gameplay rules.
 * This project was tested with a very limited beta testing approach.
   Basically we had friends and family play the game after learning the
   rules to test the project. We also played it a lot ourselves to test.
+  We also added and removed various print statements during testing to
+  ensure that what we expected to happen in the code was in fact going 
+  on behind the scenes. This type of debugging method was chosen due to
+  lack of an IDE with a proper debugger for the language.
+  
 
 ## Known Bugs
 * Currently no known bugs
