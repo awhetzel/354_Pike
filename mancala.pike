@@ -13,27 +13,17 @@ int main()
 		players = Stdio.stdin->gets();
 		numPlayers = (int) players;
 	}
-	//if(numPlayers == 1){
-	//	write("Enter Difficulty(Easy: 1\tMedium: 2\tHard: 3\n");
-	//	string level = Stdio.stdin->gets();
-	//	int CPUlevel = (int) level;
-	//	while(CPUlevel < 1 || CPUlevel > 3){
-	//		write("Incorrect Entry:\nPlease enter 1 for Easy, 2 for Medium, or 3 for Hard\n");
-	//		level = stdio.stdin->gets();
-	//		CPUlevel = (int) level;
-	//	}
-	//	write("Selected Difficulty: ");
-	//	if(CPUlevel == 1)
-	//		write("Easy\n");
-	//	else if(CPUlevel == 2)
-	//		write("Medium\n");
-	//	else if(CPUlevel == 3)
-	//		write("Hard\n");
-	//}
+	
 	array user1 = ({1, 2, 3, 4, 5, 6});
 	array user2 = ({8, 9, 10, 11, 12, 13});
 	array boardIndex = ({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
-	//toString(boardIndex);
+	write("Player 1 indexes: 1, 2, 3, 4, 5, 6\n");
+	if(numPlayers == 2){
+		write("Player 2 indexes: 8, 9, 10, 11, 12, 13\n");
+	}
+	write("Mancala Board Indexes: \n");
+	toString(boardIndex);
+	write("\nStarting Board :\n");
 	array board = ({4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0});
 	//array to string to put into mancala board format
 	string s = toString(board);						
@@ -77,7 +67,7 @@ int main()
 			indexstr = Stdio.stdin->gets();					
 			index = (int) indexstr;	
 			//Player one
-			if(pNum ==1){
+			if(pNum ==1 && index >= 1 && index<= 6 && index != 7 && index != 14){
 				if(index >= 1 && index <=6 && index != 7 && index != 14){
 					pOneTurn = playerOneTurn(board,index);
 					write(s+"\n");
@@ -87,7 +77,7 @@ int main()
 				}
 			}
 			//Player two
-			else if(pNum == 2){
+			else if(pNum == 2 && index >= 7 && index <=14 && index != 7 && index != 14){
 				if(index >= 7 && index <=14 && index != 7 && index != 14){
 					pTwoTurn = playerTwoTurn(board, index);
 					write(s+"\n");
@@ -194,7 +184,7 @@ void finishUp(array board){
 	for(int i =0; i<6; i++){
 		if(board[i] >0){
 			extraP1 += board[i];
-			write("\n" + extraP1);
+			//write("\n" + extraP1);
 			board[i] = 0;
 		}
 	}
@@ -202,14 +192,13 @@ void finishUp(array board){
 	for(int i=7; i<13; i++){
 		if(board[i] >0){
 			extraP2 += board[i];
-			write("\n" + extraP2);
+			//write("\n" + extraP2);
 			board[i] = 0;
 		}
 	}
 	board[6] += extraP1;
 	board[13] += extraP2;
-
-	//TODO can add final rule 
+	toString(board);
 	int player1Score = board[6];
 	int player2Score = board[13];
 	if(player1Score > player2Score){
